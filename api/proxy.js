@@ -1,12 +1,6 @@
 // api/proxy.js
 export const config = { api: { bodyParser: false } };
 
-const ALLOWED_HOSTS = new Set([
-  'api.telegram.org',
-  'httpbin.org',
-  // Tambah host yang kamu izinkan di sini
-]);
-
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*'); // atau ganti dengan domain kamu
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
@@ -28,10 +22,6 @@ export default async function handler(req, res) {
     let u;
     try { u = new URL(target); } 
     catch { return res.status(400).json({ error: 'Invalid URL' }); }
-
-    if (!ALLOWED_HOSTS.has(u.host)) {
-      return res.status(403).json({ error: `Host not allowed: ${u.host}` });
-    }
 
     // Kumpulkan body mentah (untuk semua method selain GET/HEAD)
     let body;
